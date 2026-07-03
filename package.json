@@ -1,0 +1,21 @@
+{
+  "name": "from-vue-to-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "mermaid": "^11.16.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vitepress": "^2.0.0-alpha.17"
+  }
+}
