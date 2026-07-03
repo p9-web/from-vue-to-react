@@ -41,6 +41,16 @@ learn:
 
 <p class="module-hook">What if a component could just wait for data — or never reach the browser at all?</p>
 
+> **The translation**
+>
+> **Vue intuition** → fetch in a lifecycle hook, toggle `isLoading`, and every component still ships to the client.
+>
+> **Why it breaks** → that is manual orchestration, and even SSR hydrates the whole tree in the browser.
+>
+> **React intuition** → `use()` reads a promise during render behind `<Suspense>`; Server Components run only on the server and ship zero JS.
+>
+> **Why it's built this way** → loading and error become declarative *boundaries*, and moving work to the server shrinks the client bundle.
+
 The last pillar of React mastery is the declarative orchestration of async resources. Historically, fetching meant a `useEffect` that set loading state, awaited data, set data state, then rendered — *"useEffect soup"* — and waterfalls where children couldn't fetch until parents resolved.
 
 ## 1. `use()` + Suspense — Declarative Fetching

@@ -36,6 +36,16 @@ learn:
 
 <p class="module-hook">Why did all the form boilerplate suddenly disappear?</p>
 
+> **The translation**
+>
+> **Vue intuition** → `v-model` gives two-way binding; you hand-wire pending, error, and rollback state.
+>
+> **Why it breaks** → React keeps one-way flow, and before v19 you wrote every piece of that async boilerplate yourself.
+>
+> **React intuition** → pass an async function to `<form action>`; `useActionState`, `useFormStatus`, and `useOptimistic` manage pending and optimistic UI.
+>
+> **Why it's built this way** → the framework owns the async transition, reclaiming `v-model`'s ergonomics without breaking one-way flow.
+
 Before React 19, forms were tedious. Vue developers used to `v-model` and a simple submit handler found the React version exhausting: controlled inputs bound to `useState`, manual `preventDefault`, hand-written fetch logic, a separate boolean for loading, and `useEffect` cleanup to dodge race conditions.
 
 React 19 rewrites this with **Actions** and built-in form hooks, shifting React toward a server-first architecture — and reclaiming much of the ergonomics `v-model` gave you (Module 1) without breaking one-way flow.

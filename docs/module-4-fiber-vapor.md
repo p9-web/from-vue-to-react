@@ -41,6 +41,16 @@ learn:
 
 <p class="module-hook">How can React pause a render halfway through — while Vue drops rendering altogether?</p>
 
+> **The translation**
+>
+> **Vue intuition** → an update runs to completion, synchronously patching the DOM.
+>
+> **Why it breaks** → a long React render on the call stack would block the main thread and freeze input.
+>
+> **React intuition** → Fiber models the work as an interruptible linked-list tree the scheduler can pause, resume, or discard.
+>
+> **Why it's built this way** → moving traversal off the JS call stack is what buys time-slicing and prioritized updates.
+
 To grasp React's performance character you must go under reconciliation. The way each framework traverses its render output dictates how it handles heavy computational loads and stays interactive. React and Vue make *opposite* bets: React optimizes the Virtual DOM with interruptible scheduling; Vue's Vapor Mode deletes the Virtual DOM.
 
 ## 1. React Fiber — Interruptible Reconciliation

@@ -38,6 +38,16 @@ learn:
 
 <p class="module-hook">What if memoization wrote itself — then failed without a word?</p>
 
+> **The translation**
+>
+> **Vue intuition** → the compiler already optimizes updates for you; you rarely reach for memoization.
+>
+> **Why it breaks** → React historically made you stabilize references by hand with `useMemo`, `useCallback`, and `React.memo`.
+>
+> **React intuition** → the React Compiler auto-memoizes at build time — *if* your components follow the Rules of React.
+>
+> **Why it's built this way** → it optimizes *how* to render, not *whether*, and bails out silently on impure code it can't prove safe.
+
 React 19 is the biggest paradigm shift since Hooks, and for a transitioning Vue developer it dramatically narrows the ergonomic gap — pushing React's performance model toward Vue's automated ideal by removing the manual cognitive load of snapshot rendering (Module 2).
 
 ## 1. Mechanics — Memoization Moved to Build Time

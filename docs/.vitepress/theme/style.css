@@ -177,6 +177,31 @@ html:not(.dark) body {
   mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M14%202v6a2%202%200%200%200%20.245.96l5.51%2010.08A2%202%200%200%201%2018%2022H6a2%202%200%200%201-1.755-2.96l5.51-10.08A2%202%200%200%200%2010%208V2%22%2F%3E%3Cpath%20d%3D%22M6.453%2015h11.094%22%2F%3E%3Cpath%20d%3D%22M8.5%202h7%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
 }
 
+/* ---- Translation aside: the Vue→React mapping (tagged by the markdown-it rule in config) ---- */
+/* Accent-bordered sibling of .module-hook; opens each module with its core four-beat mapping. */
+.vp-doc blockquote.translation {
+  border-left-color: var(--silicon-accent);
+  background:
+    linear-gradient(rgba(147, 51, 234, 0.05), rgba(147, 51, 234, 0.05)),
+    var(--vp-c-bg-soft);
+}
+.vp-doc blockquote.translation > p {
+  margin: 6px 0;
+}
+.vp-doc blockquote.translation > p:first-child {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silicon-accent);
+}
+.vp-doc blockquote.translation > p:not(:first-child) strong {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
 /* ---- Tables: silicon grid ---- */
 .vp-doc th {
   background: var(--vp-c-bg-soft);

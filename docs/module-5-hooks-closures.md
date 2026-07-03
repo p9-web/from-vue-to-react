@@ -42,6 +42,16 @@ learn:
 
 <p class="module-hook">Why does my callback keep seeing a value that already changed?</p>
 
+> **The translation**
+>
+> **Vue intuition** → `setup()` runs once; your functions close over stable, live refs.
+>
+> **Why it breaks** → a React component re-runs top-to-bottom every render, freezing each value into that render's snapshot.
+>
+> **React intuition** → a callback that outlives its render sees stale state — fix it with a functional update, a dependency, or a ref.
+>
+> **Why it's built this way** → re-running the function *is* the model; the snapshot is what makes each render predictable.
+
 Vue Composables and React Hooks both extract reusable stateful logic — and that surface similarity is a trap. Their execution semantics and memory models are entirely different, and the gap is where the most insidious React bugs live.
 
 ## 1. Setup Once vs. Render Every Time

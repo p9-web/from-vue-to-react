@@ -38,6 +38,16 @@ learn:
 
 <p class="module-hook">Where did my slots go?</p>
 
+> **The translation**
+>
+> **Vue intuition** → distribute content with `<slot>`, named slots, and scoped slots.
+>
+> **Why it breaks** → React has no slot syntax at all.
+>
+> **React intuition** → JSX is a value: default slot → `props.children`, named → JSX props, scoped → render props, deep → compound components over Context.
+>
+> **Why it's built this way** → treating markup as a first-class value removes any need for a separate slot mechanism.
+
 Composition is the foundation of scalable, reusable UI. Vue gives you a semantic, native content-distribution API — **slots**, derived from Web Components. React has no slot syntax; instead it treats *everything*, including JSX elements, as first-class JavaScript values you pass around. Master that reframing and every Vue slot has a clean React analog.
 
 ## 1. Default Slots → `props.children`
