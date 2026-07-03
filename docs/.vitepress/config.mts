@@ -128,6 +128,9 @@ export default defineConfig({
     server: { port: 5180 }, // avoid the default 5173 (and the sibling course on 5179)
   },
   head: [
+    // favicon — base-prefixed on purpose: VitePress does not prepend `base` to head hrefs.
+    ['link', { rel: 'icon', type: 'image/png', href: '/from-vue-to-react/favicon.png' }],
+    ['link', { rel: 'apple-touch-icon', href: '/from-vue-to-react/favicon.png' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     [
@@ -190,6 +193,7 @@ export default defineConfig({
       '## Optional',
       '',
       `- [Course syllabus](${SITE_URL}/course-syllabus.html): the full curriculum, organized into four journey parts.`,
+      `- [False Friends](${SITE_URL}/false-friends.html): Vue APIs that look like React's but diverge in execution.`,
       `- [Full text, all modules inlined](${SITE_URL}/llms-full.txt): for one-shot ingestion.`,
       '',
     ].join('\n')
@@ -239,6 +243,7 @@ export default defineConfig({
     nav: [
       { text: icon('home', 15) + 'Home', link: '/' },
       { text: icon('list', 15) + 'Syllabus', link: '/course-syllabus' },
+      { text: icon('arrow-left-right', 15) + 'False Friends', link: '/false-friends' },
       {
         // One dropdown; each Part is a titled group, which VitePress renders as a separated section.
         text: icon('grid-3x3', 15) + 'Modules',
@@ -255,6 +260,7 @@ export default defineConfig({
         text: 'Overview',
         items: [
           { text: icon('compass', 16) + 'Course Syllabus', link: '/course-syllabus' },
+          { text: icon('arrow-left-right', 16) + 'False Friends', link: '/false-friends' },
           { text: icon('book-open', 16) + 'Conclusion', link: '/conclusion' },
         ],
       },

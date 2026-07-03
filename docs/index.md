@@ -50,6 +50,31 @@ You've asked these before. Here's the shape of the answers — the whole course,
 
 > **One concept explains half of React: identity.** List keys, `React.memo`, dependency arrays, immutable updates, Context, reconciliation — they're all the same question wearing different costumes: *is this the same reference as last render?* Vue's dependency tracking hides that question; React puts it at the center. [Module 3](/module-3-identity-equality) makes it explicit.
 
+→ **[False Friends](/false-friends):** every Vue API that looks like a React one but isn't — `computed`≠`useMemo`, `watch`≠`useEffect`, `ref`≠`useRef`.
+
+## The two engines
+
+Both frameworks turn state into DOM. They take opposite routes to get there:
+
+```mermaid
+flowchart TB
+  subgraph vue ["Vue · the runtime does the work"]
+    direction LR
+    v1["Reactive graph"] --> v2["Dependency tracking"] --> v3["Compiler optimizations"] --> v4["Fine-grained updates"]
+  end
+  vue -->|learn why| react
+  subgraph react ["React · you reason about the work"]
+    direction LR
+    r1["Render"] --> r2["Compare identity"] --> r3["Reconcile"] --> r4["Commit"]
+  end
+```
+
+Vue's reactivity *hides* its pipeline; React makes you *drive* it — and that pipeline is the spine of this whole course:
+
+> **Render → Identity → Reconciliation → Effects → Performance**
+
+Ten modules are really five links you already half-know, in order. A render produces elements; React compares their **identity** against the last render; that comparison drives **reconciliation**; committed changes fire **effects**; and what stayed identical decides **performance**. **Identity** — [Module 3](/module-3-identity-equality) — is the hinge the other four turn on, which is why it comes first.
+
 ## A four-part journey
 
 Each part assumes the one before it. Work top-down:
