@@ -19,19 +19,20 @@ const DOCS_DIR = fileURLToPath(new URL('..', import.meta.url)) // docs/.vitepres
 const part1 = [
   { text: '01 · Architecture & Ecosystem', link: '/module-1-architecture-ecosystem', icon: 'layers' },
   { text: '02 · Reactivity & Rendering', link: '/module-2-reactivity-rendering', icon: 'zap' },
+  { text: '03 · Identity & Equality', link: '/module-3-identity-equality', icon: 'fingerprint' },
 ]
 const part2 = [
-  { text: '03 · Fiber vs. Vapor', link: '/module-3-fiber-vapor', icon: 'cpu' },
-  { text: '04 · Hooks, Closures & Effects', link: '/module-4-hooks-closures', icon: 'braces' },
+  { text: '04 · Fiber vs. Vapor', link: '/module-4-fiber-vapor', icon: 'cpu' },
+  { text: '05 · Hooks, Closures & Effects', link: '/module-5-hooks-closures', icon: 'braces' },
 ]
 const part3 = [
-  { text: '05 · State Management', link: '/module-5-state-management', icon: 'package' },
-  { text: '06 · Composition Patterns', link: '/module-6-composition-patterns', icon: 'puzzle' },
+  { text: '06 · State Management', link: '/module-6-state-management', icon: 'package' },
+  { text: '07 · Composition Patterns', link: '/module-7-composition-patterns', icon: 'puzzle' },
 ]
 const part4 = [
-  { text: '07 · The React Compiler', link: '/module-7-react-compiler', icon: 'binary' },
-  { text: '08 · Actions & Forms', link: '/module-8-actions-forms', icon: 'app-window' },
-  { text: '09 · Suspense & Server Components', link: '/module-9-suspense-server-components', icon: 'globe' },
+  { text: '08 · The React Compiler', link: '/module-8-react-compiler', icon: 'binary' },
+  { text: '09 · Actions & Forms', link: '/module-9-actions-forms', icon: 'app-window' },
+  { text: '10 · Suspense & Server Components', link: '/module-10-suspense-server-components', icon: 'globe' },
 ]
 
 // Project the Lucide icon into the menu label (nav/sidebar render `text` via v-html).
@@ -274,7 +275,7 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/p9-web/from-vue-to-react' },
     ],
   },
 })

@@ -37,6 +37,8 @@ learn:
 
 # Module 2: Reactivity Models & Rendering Triggers
 
+<p class="module-hook">Where your Vue instincts quietly misfire.</p>
+
 Understanding precisely how React decides *what to update* is the single most important technical hurdle for a transitioning Vue developer. Both frameworks use a Virtual DOM to batch work before touching the costly real DOM — but their reconciliation strategies and re-render heuristics are diametrically opposed. The one sentence to internalize: **React is unaware of which data a component read.**
 
 ## 1. Vue's Compiler-Informed Granular Reactivity
@@ -102,7 +104,7 @@ function Parent() {
 }
 ```
 
-For a Vue developer used to `computed` "just working," the explicit tracking of reference equality is the heaviest cognitive tax in React. It is exactly this tax that the **React Compiler** (Module 7) automates — and Vue's **Vapor Mode** (Module 3) attacks from the opposite direction by shrinking the runtime instead.
+For a Vue developer used to `computed` "just working," the explicit tracking of reference equality is the heaviest cognitive tax in React. It is exactly this tax that the **React Compiler** (Module 8) automates — and Vue's **Vapor Mode** (Module 4) attacks from the opposite direction by shrinking the runtime instead.
 
 > **Self-Test:**
 > A teammate wraps *every* value in `useMemo` "to be safe." Why can this be net-negative, and what is the actual precondition for `useMemo`/`React.memo` to help? *(Memoization has its own cost — the cache, the dependency comparison, and stored closures — so blanket use adds overhead with no benefit unless (a) the computation or subtree is genuinely expensive and (b) its inputs are referentially stable enough to hit the cache.)*

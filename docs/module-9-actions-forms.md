@@ -1,18 +1,18 @@
 ---
-title: "Module 8 · Actions, Forms & Optimistic Updates"
+title: "Module 9 · Actions, Forms & Optimistic Updates"
 description: "React 19 Actions and form hooks end the controlled-input boilerplate: form actions, useActionState, useFormStatus, and useOptimistic for instant UI with automatic rollback — for senior Vue devs."
 learn:
-  module: 8
+  module: 9
   level: advanced
   timeRequired: PT40M
   prerequisites:
-    - "Module 4 · Hooks, Closures & Effects"
+    - "Module 5 · Hooks, Closures & Effects"
     - "Controlled inputs & form submission"
     - "Promises / async functions"
   outcomes:
     - "Replace manual controlled-form boilerplate with a React 19 Action"
     - "Wire useActionState and useFormStatus for pending UI without prop drilling"
-    - "Apply useOptimistic for instant UI with automatic rollback on failure"
+    - "Apply useOptimistic for instant UI that reverts automatically when the action settles"
   concepts:
     - "Actions (async function to form action)"
     - "useActionState"
@@ -32,7 +32,9 @@ learn:
   teachingApproach: "Show the pre-19 boilerplate, then delete it piece by piece with each new primitive."
 ---
 
-# Module 8: Asynchronous UI, Forms & Optimistic Updates
+# Module 9: Asynchronous UI, Forms & Optimistic Updates
+
+<p class="module-hook">Why did all the form boilerplate suddenly disappear?</p>
 
 Before React 19, forms were tedious. Vue developers used to `v-model` and a simple submit handler found the React version exhausting: controlled inputs bound to `useState`, manual `preventDefault`, hand-written fetch logic, a separate boolean for loading, and `useEffect` cleanup to dodge race conditions.
 
@@ -102,7 +104,7 @@ function SubmitButton() {
 }
 ```
 
-* **`useOptimistic`** patches the UI with the expected value the instant you submit, for elite perceived performance. If the request fails, React **automatically reverts** to the truthful state — no rollback code in a store.
+* **`useOptimistic`** patches the UI with the expected value the instant you submit, for elite perceived performance. It must run inside an Action; when that Action settles, the optimistic overlay is discarded and the UI **snaps back to the real state** — so a failed request needs no rollback code, because the optimistic value was only ever a temporary layer over the truth.
 
 ```jsx
 const [optimisticTodos, addOptimistic] = useOptimistic(
