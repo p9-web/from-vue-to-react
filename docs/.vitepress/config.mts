@@ -203,17 +203,18 @@ export default defineConfig({
     fs.writeFileSync(path.join(siteConfig.outDir, 'llms-full.txt'), full.join('\n'))
   },
   markdown: {
-    // tag blockquotes that open with "Self-Test" so the theme can style them as a REPL probe
+    // tag blockquotes by their opening marker so the theme can style them:
+    // "Self-Test" → REPL-probe aside; "The translation" → Vue→React mapping aside.
     config: (md: MarkdownIt) => {
-      md.core.ruler.push('self_test_blockquote', (state) => {
+      md.core.ruler.push('marker_blockquote', (state) => {
         const tokens = state.tokens
         for (let i = 0; i < tokens.length; i++) {
           if (tokens[i].type !== 'blockquote_open') continue
           for (let j = i + 1; j < tokens.length && tokens[j].type !== 'blockquote_close'; j++) {
             if (tokens[j].type === 'inline') {
-              if (/^\**\s*self-test/i.test(tokens[j].content.trimStart())) {
-                tokens[i].attrJoin('class', 'self-test')
-              }
+              const c = tokens[j].content.trimStart()
+              if (/^\**\s*self-test/i.test(c)) tokens[i].attrJoin('class', 'self-test')
+              else if (/^\**\s*the translation/i.test(c)) tokens[i].attrJoin('class', 'translation')
               break
             }
           }

@@ -39,6 +39,16 @@ learn:
 
 <p class="module-hook">Where your Vue instincts quietly misfire.</p>
 
+> **The translation**
+>
+> **Vue intuition** → change a reactive value and only the components that *read* it re-render.
+>
+> **Why it breaks** → React never tracked which data you read, so a state change re-renders the component and its whole subtree.
+>
+> **React intuition** → rendering is opt-*out*: you stop the unnecessary work with `React.memo` / `useMemo`, rather than opt in.
+>
+> **Why it's built this way** → with no runtime dependency graph, React re-runs and diffs instead of subscribing reads to writes.
+
 Understanding precisely how React decides *what to update* is the single most important technical hurdle for a transitioning Vue developer. Both frameworks use a Virtual DOM to batch work before touching the costly real DOM — but their reconciliation strategies and re-render heuristics are diametrically opposed. The one sentence to internalize: **React is unaware of which data a component read.**
 
 ## 1. Vue's Compiler-Informed Granular Reactivity

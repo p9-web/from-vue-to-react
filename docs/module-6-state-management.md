@@ -41,6 +41,16 @@ learn:
 
 <p class="module-hook">Why can't I just mutate the store the way Pinia let me?</p>
 
+> **The translation**
+>
+> **Vue intuition** → mutate the store (`store.user.name = 'Jane'`) and the UI follows.
+>
+> **Why it breaks** → React schedules renders by *reference change*; mutating in place keeps the same reference, so nothing re-renders.
+>
+> **React intuition** → return a *new* object from a setter (`set(s => ({ items: [...s.items, x] }))`).
+>
+> **Why it's built this way** → with no dependency graph, a cheap reference check is how React detects that state changed.
+
 For state shared across component branches, Vue developers reach for **Pinia**, which uses the same Composition-API syntax as components to create globally reactive stores. Pinia leans on **mutation**: you reassign properties directly (`store.user.name = 'Jane'`) and the proxy system broadcasts the change to every subscriber instantly.
 
 Moving to React means moving to **immutability**. Redux still exists as the legacy heavyweight that shaped React's early architecture, but modern React favors **Zustand** — the closest conceptual bridge for a Vue dev, because like Pinia it creates stores without wrapping the whole tree in Context Providers.

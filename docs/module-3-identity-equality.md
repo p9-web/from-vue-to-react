@@ -39,6 +39,16 @@ learn:
 
 <p class="module-hook">React doesn't ask what changed. It asks: is it the same object?</p>
 
+> **The translation**
+>
+> **Vue intuition** → the proxy tracks property access, so you rarely think about object identity.
+>
+> **Why it breaks** → React has no such graph; it asks one cheap question — "the same reference as last render?"
+>
+> **React intuition** → keys, `React.memo`, dependency arrays, and immutable updates are all that single check in disguise.
+>
+> **Why it's built this way** → a reference comparison is O(1) and needs zero bookkeeping — change detection that scales.
+
 Module 2 established that React is unaware of *which data* a component read. That single fact has a consequence worth its own module: with no dependency graph to consult, React falls back on the only cheap question it can ask at almost every decision point — **"is this the same reference as last time?"** Memoization, dependency arrays, immutable state, and list reconciliation are not four unrelated rules. They are that one question wearing four costumes.
 
 Vue rarely makes you think about identity because its proxy **tracks property access**: read `user.name` and Vue knows, at the property level, exactly what changed. React has no such tracking, so it leans on **reference identity** instead. Internalize this module and the rest of the course stops being a checklist and becomes a single idea applied repeatedly.

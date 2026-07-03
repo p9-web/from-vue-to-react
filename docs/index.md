@@ -5,8 +5,8 @@ description: "Not a React tutorial — a translation layer for senior Vue engine
 
 hero:
   name: "From Vue to React"
-  text: "You already think in Vue. Learn to think in React."
-  tagline: "React isn't hard because of JSX. It's hard because it makes different architectural bets than Vue — top-down rendering, reference identity, immutable state. This course is the translation layer: every Vue instinct mapped to its React equivalent, then taken a layer deeper to where they diverge."
+  text: "React isn't hard because of JSX."
+  tagline: "It's hard because it makes different architectural bets than Vue — top-down rendering, reference identity, immutable state. You already think in Vue; this is the translation layer that teaches you to think in React — every instinct mapped to its equivalent, then taken a layer deeper to where they diverge."
   actions:
     - theme: brand
       text: Start · Module 1
@@ -37,6 +37,18 @@ features:
     link: /module-8-react-compiler
     linkText: Reach the frontier
 ---
+
+## Three questions, answered
+
+You've asked these before. Here's the shape of the answers — the whole course, compressed to three lines:
+
+| Your Vue instinct | The React reality |
+| :--- | :--- |
+| *"Why isn't this just a `computed`?"* | Everything recalculates on every render — you opt **out** of work, not in. → [Module 2](/module-2-reactivity-rendering) |
+| *"Why doesn't React know what changed?"* | It compares **identities**, not dependencies. → [Module 3](/module-3-identity-equality) |
+| *"Why did `useEffect` fire again?"* | Effects synchronize with the outside world; the dependency array says **when**. → [Module 5](/module-5-hooks-closures) |
+
+> **One concept explains half of React: identity.** List keys, `React.memo`, dependency arrays, immutable updates, Context, reconciliation — they're all the same question wearing different costumes: *is this the same reference as last render?* Vue's dependency tracking hides that question; React puts it at the center. [Module 3](/module-3-identity-equality) makes it explicit.
 
 ## A four-part journey
 
@@ -71,5 +83,9 @@ Every one has a precise, mechanical answer rooted in how React executes. This co
 ## Built on React 19 — not React 18
 
 The curriculum covers the modern stack — the **React Compiler**, **Actions**, **`use()`**, **Suspense**, and **Server Components** — not legacy class components or dated patterns.
+
+## When you finish
+
+You won't just write React that compiles — you'll know *why* it looks the way it does: why state must be immutable, why effects take dependency arrays, why everyone memoizes, why identity sits under nearly every rule. React stops being a set of conventions to memorize and becomes a model you can reason from.
 
 **10 modules · ≈ 7 h 40 m of focused reading.** Begin at [Module 1 · Architecture & Ecosystem](/module-1-architecture-ecosystem), or scan the [full syllabus](/course-syllabus).
