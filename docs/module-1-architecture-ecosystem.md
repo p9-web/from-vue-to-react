@@ -32,14 +32,17 @@ learn:
     - "react.dev"
     - "vuejs.org"
     - "Pinia docs"
+    - "Stack Overflow Developer Survey 2025"
   teachingApproach: "Map each Vue convenience to the React decision it forces, then expose the second-order cost."
 ---
 
 # Module 1: Architectural Philosophies & Ecosystem Dynamics
 
+<p class="module-hook">Why does React hand you so little — and call it a feature?</p>
+
 The fundamental divergence between Vue and React begins at the highest level — the ecosystem itself, not the syntax. Vue is a *progressively opinionated framework*: it scales down to a single script tag like jQuery, and scales up with a cohesive, batteries-included official toolchain. React is, strictly, an *unopinionated UI rendering library*. That one distinction has profound second-order effects on architecture, technical-debt accumulation, and long-term team velocity.
 
-By reported 2026 figures React holds a dominant developer-usage share (~44.7%, entrenched in fintech and large corporate apps) while Vue holds a respected, growing share (~17.6%, often scoring higher on developer experience and onboarding). The gap is not a raw-performance verdict — Vue frequently wins on baseline init and memory — but a reflection of enterprise backing and ecosystem gravity.
+In the 2025 Stack Overflow Developer Survey, React led web frameworks in usage (~44.7%, entrenched in fintech and large corporate apps) with Vue holding a respected, growing share (~17.6%, often scoring higher on developer experience and onboarding). The gap is not a raw-performance verdict — Vue frequently wins on baseline init and memory — but a reflection of enterprise backing and ecosystem gravity.
 
 ## 1. The Library-vs-Framework Dichotomy
 
@@ -48,8 +51,8 @@ When you scaffold a large Vue app, the big infrastructure decisions are largely 
 React reconciles and renders views — and stops there. Everything else is yours to select, wire, and maintain over time:
 
 * **Routing:** React Router or TanStack Router
-* **State:** Redux, Zustand, or Jotai (Module 5)
-* **Data fetching:** TanStack Query or SWR (Module 9)
+* **State:** Redux, Zustand, or Jotai (Module 6)
+* **Data fetching:** TanStack Query or SWR (Module 10)
 
 This hyper-modularity is real flexibility, but it produces *ecosystem fatigue*: dependency conflicts, abandoned packages, and painful migrations when peer dependencies upgrade at different cadences. To master React you stop being a framework consumer and become a **frontend systems integrator**, owning the stack's compatibility yourself.
 
@@ -97,7 +100,7 @@ function NameField() {
 }
 ```
 
-`v-model` is sugar over exactly that `value` + `onChange` pair — there is no single React directive that replaces it, and hiding it behind a helper is how teams reintroduce Vue's ergonomics. The strictness costs boilerplate but buys **traceability**: in a massive repo, unpredictable mutation is nearly impossible because every data path is explicitly wired. (React 19's Actions reclaim much of the lost ergonomics without abandoning one-way flow — Module 8.)
+`v-model` is sugar over exactly that `value` + `onChange` pair — there is no single React directive that replaces it, and hiding it behind a helper is how teams reintroduce Vue's ergonomics. The strictness costs boilerplate but buys **traceability**: in a massive repo, unpredictable mutation is nearly impossible because every data path is explicitly wired. (React 19's Actions reclaim much of the lost ergonomics without abandoning one-way flow — Module 9.)
 
 > **Self-Test:**
 > In Pinia you write `store.user.name = 'Jane'` and the UI updates everywhere. Why can't you translate that literally to a React store, and what must you do instead? *(React detects change by reference, not by proxy interception — you must produce a new object/state value via a setter; mutating in place changes nothing React can observe.)*

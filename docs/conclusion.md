@@ -9,7 +9,7 @@ Transitioning from a senior Vue developer to a complete React master requires ab
 
 The four parts of this course are the same journey told at four depths:
 
-* **The Mental-Model Shift** replaced opt-in dependency tracking with opt-out, top-down rendering — the one inversion everything else follows from.
+* **The Mental-Model Shift** replaced opt-in dependency tracking with opt-out, top-down rendering, and put reference identity at the center — the inversions everything else follows from.
 * **The Execution Engine** made that concrete: the asynchronous, interruptible Fiber reconciler, and function components that re-run top to bottom, spawning the stale closures Vue's one-time `setup()` never produced.
 * **State & Composition** rebuilt the two Vue conveniences you missed most — a mutable global store (now immutable in Zustand) and slots (now children, render props, and compound components).
 * **Modern React (19+)** closed the gap: the Compiler eliminates manual memoization, Actions and `useOptimistic` erase form boilerplate, and the `use()` hook with Server Components moves data-work off the client entirely.

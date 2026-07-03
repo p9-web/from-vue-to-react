@@ -1,18 +1,20 @@
 ---
-title: "Module 4 · Hooks, Closures & Execution Semantics"
+title: "Module 5 · Hooks, Closures & Execution Semantics"
 description: "Why Vue setup() runs once and React components re-run every render — stale closures, the useEffect dependency array, watchEffect's sync-tracking caveat, and VueUse vs ReactUse."
 learn:
-  module: 4
+  module: 5
   level: advanced
-  timeRequired: PT50M
+  timeRequired: PT55M
   prerequisites:
     - "Module 2 · Reactivity & Rendering"
+    - "Module 3 · Identity & Equality"
     - "JavaScript closures"
     - "Vue Composition API (setup, watch, watchEffect)"
   outcomes:
     - "Explain why a React component's functions and values are re-created every render"
     - "Diagnose and fix stale-closure bugs in effects, timers, and async callbacks"
     - "Map watch/watchEffect to useEffect, including the dependency array and cleanup"
+    - "Use useRef for stable mutable values, DOM nodes, and reading the latest value in a closure"
   concepts:
     - "one-time setup() vs continuous render"
     - "render snapshot / frozen state"
@@ -22,11 +24,13 @@ learn:
     - "watch vs watchEffect"
     - "synchronous dependency tracking"
     - "VueUse vs ReactUse"
+    - "useRef (stable mutable box)"
+    - "latest-value ref pattern"
   misconceptions:
     - "Hooks are Composables with different names"
     - "useEffect is a lifecycle hook like onMounted"
     - "watchEffect tracks dependencies accessed after await"
-  selfTests: 3
+  selfTests: 4
   primarySources:
     - "react.dev — Synchronizing with Effects / Lifecycle of Reactive Effects"
     - "vuejs.org — Watchers"
@@ -34,7 +38,9 @@ learn:
   teachingApproach: "Run the same logic through both execution models and let the closure bug surface, then name the rule that prevents it."
 ---
 
-# Module 4: Component Logic, Closures & Execution Semantics
+# Module 5: Component Logic, Closures & Execution Semantics
+
+<p class="module-hook">Why does my callback keep seeing a value that already changed?</p>
 
 Vue Composables and React Hooks both extract reusable stateful logic — and that surface similarity is a trap. Their execution semantics and memory models are entirely different, and the gap is where the most insidious React bugs live.
 
@@ -105,7 +111,53 @@ Vue's automatic dependency tracking and stable refs eliminate this entire class 
 > **Self-Test:**
 > The `Timer` above logs `1` forever. Name the mechanism and say which fix avoids re-subscribing the interval on every tick. *(A stale closure: the `[]`-deps effect captured `count = 0` once. The functional update `setCount(c => c + 1)` fixes it **without** re-subscribing, because it never reads the captured value; adding `count` to deps also works but tears down and recreates the interval each change.)*
 
-## 3. Side Effects — `watchEffect` vs `useEffect`
+## 3. Escaping the Snapshot: `useRef`
+
+Every value in §1's render snapshot is frozen — usually what you want, but sometimes you need a value that **persists across renders without triggering one**, or the *latest* value inside a long-lived closure. That is `useRef`: a mutable box (`{ current }`) whose identity is stable for the component's lifetime and whose `.current` you may read or write freely, in or after render, without scheduling a re-render.
+
+```jsx
+function Stopwatch() {
+  const [ticks, setTicks] = useState(0)
+  const intervalRef = useRef(null)          // survives renders; writing it never re-renders
+
+  function start() {
+    intervalRef.current = setInterval(() => setTicks((t) => t + 1), 1000)
+  }
+  function stop() {
+    clearInterval(intervalRef.current)      // same box, read on a later render
+  }
+  return (
+    <>
+      <span>{ticks}</span>
+      <button onClick={start}>go</button>
+      <button onClick={stop}>stop</button>
+    </>
+  )
+}
+```
+
+Two jobs, one primitive:
+
+* **A stable mutable slot** — timer ids, previous values, or a DOM node (`<input ref={inputRef} />`, then `inputRef.current.focus()`). This is the closest thing React has to Vue's *template* `ref`.
+* **The "latest value" escape from stale closures** — mirror state into a ref and read `ref.current` inside a callback that outlived its render, deliberately sidestepping the §2 snapshot when you want the freshest value:
+
+```jsx
+const latest = useRef(value)
+useEffect(() => { latest.current = value })   // refresh every render
+useEffect(() => {
+  const id = setInterval(() => console.log(latest.current), 1000) // never stale
+  return () => clearInterval(id)
+}, [])                                         // effect stays mounted; ref stays fresh
+```
+
+The trade: a ref lives **outside** React's data flow, so changing `.current` renders nothing. Use state when the UI should react to a change; use a ref when it should not. Vue's `ref()` is *both* reactive state and template handle; React deliberately splits those roles — `useState` for the reactive half, `useRef` for the un-reactive box.
+
+*Vue's `ref` is one reactive thing; React's `useRef` is the opposite of state — a value that changes without telling anyone.*
+
+> **Self-Test:**
+> You need a `setInterval` callback to always see the newest `count` **without** tearing the interval down and rebuilding it on every change. Which primitive gets you there, and why doesn't it re-render? *(A `useRef` mirror: write `ref.current = count` in an effect each render and read `ref.current` in the interval — the ref's identity is stable so the effect can stay mounted with `[]`, and writing `.current` is outside React's data flow, so it schedules no render.)*
+
+## 4. Side Effects — `watchEffect` vs `useEffect`
 
 `useEffect` synchronizes a component with an external system (network, subscriptions, direct DOM). Because the component re-runs continuously, React needs an explicit **dependency array** to decide whether to re-run the effect:
 
@@ -133,7 +185,7 @@ watchEffect(async () => {
 })
 ```
 
-## 4. Utility Ecosystems
+## 5. Utility Ecosystems
 
 Both worlds ship composable utility libraries for browser APIs, storage, and observers: **VueUse** for Vue, **ReactUse** for React. They solve identical problems but each obeys its framework's reactivity model — VueUse returns reactive refs; ReactUse returns snapshotted values and follows the Rules of Hooks.
 

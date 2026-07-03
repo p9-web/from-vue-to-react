@@ -1,12 +1,12 @@
 ---
-title: "Module 6 · Advanced Composition & UI Patterns"
+title: "Module 7 · Advanced Composition & UI Patterns"
 description: "Translating Vue slots to React: default slots as children, named slots as JSX props, scoped slots as render props, and deep composition via the compound-components pattern over Context."
 learn:
-  module: 6
+  module: 7
   level: advanced
   timeRequired: PT45M
   prerequisites:
-    - "Module 4 · Hooks, Closures & Effects"
+    - "Module 5 · Hooks, Closures & Effects"
     - "Vue slots (default, named, scoped)"
     - "JSX fundamentals"
   outcomes:
@@ -34,7 +34,9 @@ learn:
   teachingApproach: "Show the Vue slot, then the React shape it becomes, escalating from children to Context."
 ---
 
-# Module 6: Advanced Component Composition & UI Patterns
+# Module 7: Advanced Component Composition & UI Patterns
+
+<p class="module-hook">Where did my slots go?</p>
 
 Composition is the foundation of scalable, reusable UI. Vue gives you a semantic, native content-distribution API — **slots**, derived from Web Components. React has no slot syntax; instead it treats *everything*, including JSX elements, as first-class JavaScript values you pass around. Master that reframing and every Vue slot has a clean React analog.
 

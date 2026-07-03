@@ -1,18 +1,20 @@
 ---
-title: "Module 5 · Global State Management"
+title: "Module 6 · Global State Management"
 description: "From Pinia's mutable reactive stores to React's immutable model — Zustand as the conceptual bridge, structural sharing, and where Redux and MobX fit for transitioning Vue devs."
 learn:
-  module: 5
+  module: 6
   level: advanced
-  timeRequired: PT40M
+  timeRequired: PT45M
   prerequisites:
     - "Module 2 · Reactivity & Rendering"
+    - "Module 3 · Identity & Equality"
     - "Pinia stores"
     - "Immutability & structural sharing basics"
   outcomes:
     - "Translate a Pinia store into an equivalent Zustand store"
     - "Explain why React state updates must be immutable to trigger a render"
     - "Choose between Zustand, Redux, and MobX for a given team constraint"
+    - "Use useReducer for complex local state and know when to prefer it over useState"
   concepts:
     - "Pinia (Composition-API stores)"
     - "mutable reactive proxies"
@@ -22,11 +24,12 @@ learn:
     - "selectors & subscriptions"
     - "Redux (legacy heavyweight)"
     - "MobX (proxy-based reactivity)"
+    - "useReducer (local reducer pattern)"
   misconceptions:
     - "Zustand lets you mutate state like Pinia"
     - "You must wrap the app in a Provider to use a store"
     - "Mutating an array then setting it re-renders"
-  selfTests: 2
+  selfTests: 3
   primarySources:
     - "Pinia docs"
     - "Zustand docs"
@@ -34,7 +37,9 @@ learn:
   teachingApproach: "Port one store line-by-line from Pinia to Zustand and let the immutability requirement drive the differences."
 ---
 
-# Module 5: Global State Management Transition
+# Module 6: Global State Management Transition
+
+<p class="module-hook">Why can't I just mutate the store the way Pinia let me?</p>
 
 For state shared across component branches, Vue developers reach for **Pinia**, which uses the same Composition-API syntax as components to create globally reactive stores. Pinia leans on **mutation**: you reassign properties directly (`store.user.name = 'Jane'`) and the proxy system broadcasts the change to every subscriber instantly.
 
@@ -95,7 +100,31 @@ Note the selector: Zustand gives back a sliver of Vue's granularity — a compon
 | **Update style** | Mutate proxy | Immutable `set` | Immer (mutate-like) | Mutate observable |
 | **Provider needed** | No | No | Yes | No |
 | **Granular reads** | Automatic | Selectors | Selectors | Automatic |
-| **Best for** | — | Greenfield React | Large/legacy | Teams wanting Vue-like mutability |
+| **Best for** | Vue apps | Greenfield React | Large/legacy | Teams wanting Vue-like mutability |
 
 > **Self-Test:**
 > A team refuses to give up direct mutation when porting a Pinia app. Which React option most faithfully preserves their model, and what do they trade away by choosing it over Zustand? *(MobX — proxy-based, mutate-and-track like Pinia; the trade is going against the grain of mainstream React, so smaller community/ecosystem momentum and less alignment with Zustand-centric patterns and tooling.)*
+
+## 4. Local Reducers: `useReducer`
+
+Not all state is global. For a *single component* with several interrelated values and transitions — a form, a wizard, a toggle-heavy widget — `useState` sprawls into a dozen setters. `useReducer` folds them into one **reducer** `(state, action) => newState`: the shape Redux made famous, but local and Provider-free.
+
+```jsx
+function reducer(state, action) {
+  switch (action.type) {
+    case 'add':   return { ...state, items: [...state.items, action.item] } // new refs (Module 3)
+    case 'clear': return { ...state, items: [] }
+    default:      return state
+  }
+}
+
+function Cart({ item }) {
+  const [state, dispatch] = useReducer(reducer, { items: [] })
+  return <button onClick={() => dispatch({ type: 'add', item })}>Add</button>
+}
+```
+
+The immutability rule from §2 still holds — a reducer must **return a new reference**, never mutate `state`. Prefer `useReducer` over `useState` when the next state depends on the previous through non-trivial transitions, when naming those transitions as actions aids clarity, or when you want to unit-test state logic as a pure function. It scales Redux's pattern *down* to one component; Zustand scales it *up* to the whole app. Vue devs meet this less often — Pinia actions mutate a shared proxy, so transitions rarely get externalized into a pure reducer.
+
+> **Self-Test:**
+> When is `useReducer` the better call than `useState`, and what rule does its reducer share with a Zustand `set`? *(When several values change together or the next state derives from the previous through named transitions — a reducer centralizes that as a pure, testable function; like Zustand's setter it must return a **new reference**, never mutate the existing state, or React won't re-render.)*

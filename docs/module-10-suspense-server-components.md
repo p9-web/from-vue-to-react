@@ -1,18 +1,19 @@
 ---
-title: "Module 9 · Suspense, Data Fetching & Server Components"
+title: "Module 10 · Suspense, Data Fetching & Server Components"
 description: "React 19's use() hook reads promises during render; Suspense removes isLoading booleans and kills fetch waterfalls; and Server Components ship zero JS — the step beyond Nuxt/Nitro SSR."
 learn:
-  module: 9
+  module: 10
   level: advanced
-  timeRequired: PT50M
+  timeRequired: PT55M
   prerequisites:
-    - "Module 4 · Hooks, Closures & Effects"
+    - "Module 5 · Hooks, Closures & Effects"
     - "Promises & async data flow"
     - "SSR / hydration basics"
   outcomes:
     - "Read a promise during render with use() behind a Suspense boundary"
     - "Structure parallel Suspense boundaries to eliminate fetch waterfalls"
     - "Explain how Server Components differ from traditional SSR and ship zero JS"
+    - "Pair Suspense with an error boundary to declare loading and failure UI"
   concepts:
     - "use() hook"
     - "reading promises during render"
@@ -23,11 +24,12 @@ learn:
     - "\"use client\" directive"
     - "streaming SSR vs RSC"
     - "zero-JS server segments"
+    - "error boundaries (onErrorCaptured analog)"
   misconceptions:
     - "use() obeys the same Rules of Hooks as useState"
     - "RSC is just SSR with a new name"
     - "Suspense still needs an isLoading boolean"
-  selfTests: 3
+  selfTests: 4
   primarySources:
     - "react.dev — use, Suspense, Server Components"
     - "Next.js App Router (RSC)"
@@ -35,7 +37,9 @@ learn:
   teachingApproach: "Replace useEffect data-fetching with use()+Suspense, then push the fetch to the server with RSC."
 ---
 
-# Module 9: Suspense, Data Fetching & Server Components
+# Module 10: Suspense, Data Fetching & Server Components
+
+<p class="module-hook">What if a component could just wait for data — or never reach the browser at all?</p>
 
 The last pillar of React mastery is the declarative orchestration of async resources. Historically, fetching meant a `useEffect` that set loading state, awaited data, set data state, then rendered — *"useEffect soup"* — and waterfalls where children couldn't fetch until parents resolved.
 
@@ -85,7 +89,30 @@ flowchart TD
     SB -->|resolves| PB["Feed"]
 ```
 
-## 3. Server Components vs. Vue SSR
+## 3. Error Boundaries — the Other Declarative Boundary
+
+Suspense turns *loading* into a boundary you declare; **error boundaries** do the same for *failure*. A render error in a subtree bubbles to the nearest error boundary, which swaps in fallback UI instead of unmounting the whole app — the React analog of Vue's `onErrorCaptured` / `errorCaptured` hook.
+
+The catch for Vue devs: the built-in mechanism is still a **class component** (the only place `componentDidCatch` / `getDerivedStateFromError` live), so most teams reach for the tiny **`react-error-boundary`** package for a hooks-friendly API.
+
+```jsx
+import { ErrorBoundary } from 'react-error-boundary'
+
+<ErrorBoundary fallback={<p>Something broke.</p>}>
+  <Suspense fallback={<Skeleton />}>
+    <Profile userPromise={userPromise} />
+  </Suspense>
+</ErrorBoundary>
+```
+
+Nest them deliberately: the **error** boundary catches a rejected promise or a render throw; the **Suspense** boundary catches the pending state. Together they replace the `try/catch` + `isError` + `isLoading` triad you'd hand-wire around a Vue fetch with two declarative wrappers. Mind the scope: like `onErrorCaptured`, an error boundary catches **render-phase** errors in its descendants — *not* errors thrown in event handlers or async callbacks, which you still handle imperatively.
+
+*Vue funnels descendant errors through an `errorCaptured` lifecycle hook; React funnels them to a boundary component — same "catch below me, show fallback," different primitive.*
+
+> **Self-Test:**
+> You wrap a data component in both `<Suspense>` and an error boundary. The fetch rejects; then, separately, an `onClick` handler throws. Which failure does the error boundary catch, and which does it not? *(It catches the render-phase failure — a rejected promise read with `use()` throws during render and becomes fallback UI — but not the click handler's throw: event-handler and async errors escape error boundaries and must be caught imperatively, e.g. try/catch inside the handler.)*
+
+## 4. Server Components vs. Vue SSR
 
 The culmination is **React Server Components (RSC)**, championed by meta-frameworks like Next.js. Both Vue and React have long used **SSR** — render HTML on the server, hydrate on the client — and Nuxt 3 does this excellently via the Nitro engine's streaming.
 
@@ -99,7 +126,7 @@ async function ProductPage({ id }) {
 }
 ```
 
-The payoff: **zero JavaScript** for static, data-heavy segments; the client bundle is reserved for genuinely interactive `"use client"` components. Where Vue's Vapor Mode (Module 3) shrinks the client bundle by dropping the VDOM runtime, RSC removes the client *execution* of data-fetching and formatting altogether — two different routes to "ship less to the browser."
+The payoff: **zero JavaScript** for static, data-heavy segments; the client bundle is reserved for genuinely interactive `"use client"` components. Where Vue's Vapor Mode (Module 4) shrinks the client bundle by dropping the VDOM runtime, RSC removes the client *execution* of data-fetching and formatting altogether — two different routes to "ship less to the browser."
 
 | Data-architecture feature | Legacy React | Modern React 19 / RSC |
 | :--- | :--- | :--- |
