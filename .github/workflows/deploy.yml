@@ -26,8 +26,6 @@ jobs:
           node-version: 22
           cache: npm
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true # self-enable Pages from CI; no repo admin to toggle the setting manually
       - run: npm ci
       - run: npm run docs:build
       - uses: actions/upload-pages-artifact@v3
